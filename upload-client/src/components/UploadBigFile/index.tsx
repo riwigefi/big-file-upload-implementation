@@ -96,29 +96,28 @@ const Index = () => {
       axiosPromiseArray.push(
         axios.post(`http://localhost:9000/file/upload`, form, axiosOptions)
       );
-
-      // After all fragments are uploaded
-      // request to merge the fragmented files
-      await axios.all(axiosPromiseArray).then(() => {
-        // merge chunks
-        const data = {
-          size: file.size,
-          name: file.name,
-          totalChunk: blockCount,
-          hash: hash,
-        };
-        axios
-          .post(`http://localhost:9000/file/merge_chunks`, data)
-          .then((res) => {
-            console.log('successful upload');
-            console.log(res.data, file);
-            alert('successful uploaded');
-          })
-          .catch((err) => {
-            console.log('merge err--', err);
-          });
-      });
     }
+    // After all fragments are uploaded
+    // request to merge the fragmented files
+    await axios.all(axiosPromiseArray).then(() => {
+      // merge chunks
+      const data = {
+        size: file.size,
+        name: file.name,
+        totalChunk: blockCount,
+        hash: hash,
+      };
+      axios
+        .post(`http://localhost:9000/file/merge_chunks`, data)
+        .then((res) => {
+          console.log('successful upload');
+          console.log(res.data, file);
+          alert('successful uploaded');
+        })
+        .catch((err) => {
+          console.log('merge err--', err);
+        });
+    });
   };
 
   return (
